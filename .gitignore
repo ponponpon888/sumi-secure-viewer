@@ -1,0 +1,17 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.openai/
+.DS_Store
+*.log
+coverage/
+private/
+uploads/
+reports/
+credentials/
+*.pem
+*.key
+*.p12
+*.pfx
+sumi-viewer-test-*.json

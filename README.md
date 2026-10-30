@@ -1,2 +1,53 @@
-# sumi-secure-viewer
-Experimental DRM capability lab for document viewing. Not production-ready.
+# SUMI Secure Viewer
+
+書類画像をDRM動画として表示する方式の実現性を調べる、実験的なブラウザー検証ラボです。
+
+**現在のコードは書類保護サービスではありません。スクリーンショット防止、DRM再生、本人認証は未実装です。実際の本人確認書類には使用しないでください。**
+
+## 実装済み
+
+- Widevine / FairPlay / PlayReadyのEME対応要求を実行
+- 個人情報を含まないダミー書類のHTML表示
+- スクショ・録画の手動観察と端末情報をJSONに書き出し
+- ローカル専用サーバー（127.0.0.1）と自動テスト
+
+外部パッケージ、解析サービス、課金APIは使用していません。JSON書き出しはブラウザー内で行います。公開コードに認証情報や実在人物の書類は含めません。
+
+## 起動
+
+Node.js 22以上とGitを使用します。Windows PowerShellでは、リポジトリを取得したフォルダで `npm.cmd run dev` を実行し、`http://127.0.0.1:4173` を開きます。依存パッケージのインストールは不要です。終了はCtrl+Cです。
+
+検証コマンドは `npm.cmd test`（動作テスト）と `npm.cmd run check`（構文確認）です。これらは実際のDRM端末・動画・ライセンスを使用しません。
+
+## 判定の限界
+
+EME要求の成功は、再生成功、ハードウェア保護、スクショ防止を証明しません。要求の失敗は、その設定で利用できなかったことを意味します。特にFairPlayでは別の再生統合方法を評価する余地があります。
+
+現在の書類と透かしはHTMLの見本です。暗号化動画や焼き込み透かしではありません。手動で「黒くなった」を選んでも `protectionVerified` は `false` のままです。別端末による撮影は防げません。
+
+## 開発順序
+
+1. 書類画像用途の利用可否・価格・テスト資格情報をDRM事業者に確認
+2. ダミー書類の動画化、提出先透かしの焼き込み、暗号化、実際のDRM再生
+3. Windows Chrome / Edgeで文字の視認性とキャプチャ結果を実測
+4. 成立した環境を基にメール認証、閲覧期限、ライセンス権限、失効を実装
+
+まずDRM再生の実証を優先し、フレームワーク移行や管理画面の作り込みは後にします。
+
+- [設計と検証条件](docs/architecture.md)
+- [Codexへの引き継ぎ](docs/codex-handoff.md)
+- [開発ルール](AGENTS.md)
+
+## 参考
+
+- [Apple FairPlay Streaming](https://developer.apple.com/streaming/fps/)
+- [Apple QA1970](https://developer.apple.com/library/archive/qa/qa1970/_index.html)
+- [Widevine overview](https://developers.google.com/widevine/drm/overview)
+
+2026-10-31確認のApple公開条件では、本番用認証情報に承認が必要で、消費者向けストリーミングサービスが対象です。この書類用途への適用可否は未確認です。サービス契約や有料申込は行っていません。
+
+## 公開範囲
+
+公開リポジトリは研究用コードと説明資料のみです。公開コードの閲覧は、書類へのアクセス権を意味しません。現在のホスト済み検証サイトは別管理です。このリポジトリへのpushによるデプロイは設定していません。
+
+ライセンスは未指定です。公開リポジトリであることのみをもって再配布・商用利用の許諾とはしません。

@@ -1,0 +1,12 @@
+{
+  "name": "sumi-secure-viewer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Experimental browser DRM capability lab. Not a protected document viewer.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "node scripts/serve.cjs",
+    "test": "node --test tests/lab.test.cjs",
+    "check": "node --check public/app.js"
+  }
+}
